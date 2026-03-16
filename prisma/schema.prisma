@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  PLAYER
+  ADMIN
+}
+
+enum DominantFoot {
+  LEFT
+  RIGHT
+  BOTH
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id               String       @id @default(cuid())
+  email            String       @unique
+  passwordHash     String
+  role             Role         @default(PLAYER)
+  name             String
+  dob              DateTime
+  parentName       String
+  parentEmail      String
+  parentPhone      String?
+  parentalConsent  Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+
+  profile          Profile?
+  submissions      Submission[]
+}
+
+model Profile {
+  id                  String        @id @default(cuid())
+  userId              String        @unique
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  avatarUrl           String?
+  city                String?
+  state               String?
+  country             String?
+  height              Float?
+  weight              Float?
+  primaryPosition     String?
+  secondaryPosition   String?
+  dominantFoot        DominantFoot?
+  currentClub         String?
+  yearsOfExperience   Int?
+  hasPassport         Boolean?
+  lastPhysicalUpdate  DateTime?
+  profileCompleteness Int           @default(0)
+
+  stat                Stat?
+}
+
+model Stat {
+  id               String   @id @default(cuid())
+  profileId        String   @unique
+  profile          Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  topKickSpeed     Float    @default(0)
+  totalGoals       Int      @default(0)
+  totalAssists     Int      @default(0)
+  coursesCompleted Int      @default(0)
+}
+
+model Course {
+  id                   String       @id @default(cuid())
+  title                String
+  description          String
+  skillFocus           String
+  thumbnailUrl         String?
+  videoInstructionUrl  String?
+  createdAt            DateTime     @default(now())
+
+  submissions          Submission[]
+}
+
+model Submission {
+  id            String           @id @default(cuid())
+  userId        String
+  courseId      String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course        Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  videoUrl      String
+  kickSpeed     Float?
+  legUsed       DominantFoot?
+  status        SubmissionStatus @default(PENDING)
+  adminFeedback String?
+  createdAt     DateTime         @default(now())
+}

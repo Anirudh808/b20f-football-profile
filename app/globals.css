@@ -1,26 +1,256 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================
+   FOOTBALL PROFILE - DESIGN SYSTEM
+   Football-centric: pitch greens, night-sky darks,
+   neon accents, athletic typography
+   ============================================ */
+
+@theme {
+  /* Color Palette */
+  --color-pitch-950: #0a0f0d;
+  --color-pitch-900: #0d1a12;
+  --color-pitch-800: #122718;
+  --color-pitch-700: #1a3d22;
+  --color-pitch-600: #22522c;
+  --color-pitch-500: #2a6836;
+  --color-pitch-400: #3a8a49;
+  --color-pitch-300: #55a864;
+  --color-pitch-200: #82c991;
+  --color-pitch-100: #b8e4c0;
+
+  --color-slate-950: #0b0f14;
+  --color-slate-900: #0f1520;
+  --color-slate-800: #161e2e;
+  --color-slate-700: #1e293b;
+  --color-slate-600: #2d3e55;
+  --color-slate-500: #3d5068;
+  --color-slate-400: #64748b;
+  --color-slate-300: #94a3b8;
+  --color-slate-200: #cbd5e1;
+  --color-slate-100: #f1f5f9;
+
+  --color-neon-500: #39ff14;
+  --color-neon-400: #57ff3a;
+  --color-neon-300: #88ff6e;
+  --color-neon-100: #d4ffca;
+
+  --color-electric-500: #00d4ff;
+  --color-electric-400: #38dcff;
+  --color-electric-300: #7aeaff;
+  --color-electric-100: #ccf7ff;
+
+  --color-yellow-500: #fbbf24;
+  --color-yellow-400: #fcd34d;
+
+  --color-red-500: #ef4444;
+  --color-red-400: #f87171;
+
+  /* Typography */
+  --font-display: "Outfit", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Shadows */
+  --shadow-glow-neon: 0 0 20px rgba(57, 255, 20, 0.3);
+  --shadow-glow-electric: 0 0 20px rgba(0, 212, 255, 0.3);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.6);
+
+  /* Border radius */
+  --radius-card: 1rem;
+  --radius-btn: 0.75rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-slate-900);
+  color: var(--color-slate-100);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  /* Subtle diagonal pitch line texture */
+  background-image: 
+    repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.012) 40px,
+      rgba(255, 255, 255, 0.012) 41px
+    );
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-neon-400), var(--color-electric-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card {
+  background: var(--color-slate-800);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.card-glow-neon {
+  box-shadow: var(--shadow-card), var(--shadow-glow-neon);
+}
+
+.card-glow-electric {
+  box-shadow: var(--shadow-card), var(--shadow-glow-electric);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-pitch-500), var(--color-pitch-400));
+  color: white;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow-neon);
+}
+
+.btn-neon {
+  background: var(--color-neon-500);
+  color: var(--color-pitch-950);
+  border: none;
+  border-radius: var(--radius-btn);
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-neon:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-neon);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-slate-200);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-btn);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--color-neon-500);
+  color: var(--color-neon-400);
+}
+
+.input-field {
+  background: var(--color-slate-700);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: var(--color-slate-100);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-neon-500);
+  box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.15);
+}
+
+.input-field::placeholder {
+  color: var(--color-slate-400);
+}
+
+/* Badge styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.badge-neon {
+  background: rgba(57, 255, 20, 0.15);
+  color: var(--color-neon-400);
+  border: 1px solid rgba(57, 255, 20, 0.3);
+}
+
+.badge-electric {
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--color-electric-400);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.badge-yellow {
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--color-yellow-400);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.badge-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-red-400);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-gray {
+  background: rgba(100, 116, 139, 0.2);
+  color: var(--color-slate-300);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Progress bar animation */
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: var(--progress-value, 0%); }
+}
+
+.progress-bar-fill {
+  animation: progress-fill 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-slate-800);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-600);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-pitch-400);
 }
